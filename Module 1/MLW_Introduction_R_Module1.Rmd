@@ -1,0 +1,1245 @@
+---
+title: "Statistics and R short course"
+author: "Marc Henrion & James Chirombo"
+date: "16 May 2023"
+output:
+  powerpoint_presentation:
+    reference_doc: MlwCom_RandStats_Template.pptx
+---
+
+```{r setup, include=FALSE, echo=F}
+knitr::opts_chunk$set(echo = TRUE, fig.width=16, fig.height=9, dpi=150, highlight=T, size = "tiny")
+
+require(tidyverse)
+require(knitr)
+require(gridExtra)
+```
+
+# Session 1: Introduction to R
+
+## Preliminaries
+
+* Certificates of attendance
+  + You need to attend the first 7 sessions.
+  + Sign in & check spelling of name on the sign-in sheet!
+  + Only issued if paid-up and in exchange for completed feedback form.
+
+$$\,$$ 
+
+* Participant packs (copy of slides, R code etc.)
+  + [https://github.com/mlw-stats/R_And_Statistics_Training_2023](https://github.com/mlw-stats/R_And_Statistics_Training_2023)
+  
+$$\,$$ 
+  
+* Office hours
+
+* House keeping
+  + Refreshments
+  + Fire exits and bathrooms
+
+  
+
+## Learning outcomes
+
+1. **KNOW R**: Explain know what R is & what it can do. 
+2. **KNOW R RESOURCES**: List useful R resources and access them. 
+3. **DO R**: Perform basic operations relevant for your research in R:
+    a. Read data into R & write data or results to the harddrive.
+    b. Manipulate & use different object types.
+    c. Write & use functions in R
+    d. Perform basic analyses on a dataset: mean, standard deviation, linear regression.
+    e. Produce various standard graphs and tables
+    f. Perform basic statistical tests such as t-tests
+
+
+## What you will not achieve in this workshop
+
+$$\,$$
+
+* You will **not** be proficient in R by the end of the week.
+
+$$\,$$
+
+* You will **not** be proficient in statistics. We cover only some of the basics .
+
+$$\,$$
+
+**Workshop materials are meant as a resource / reference.**
+
+It is up to **you** to then **develop yourself further** after the workshop.
+
+
+# What is R?
+
+
+## What is R?
+
+$$\,$$
+
+* A programming language / software environment for statistical computing.
+
+$$\,$$
+
+* Developed by **R**obert Gentleman and **R**oss Ihaka in New Zealand.
+
+$$\,$$
+
+* First released August 1993.
+
+$$\,$$
+
+
+## What is R?
+
+:::::: {.columns}
+::: {.column width="50%"}
+![Thieme, N., R Generation, Significance, 15 (4), 2018](images/gentleman.png)
+:::
+
+::: {.column width="50%"}
+![Thieme, N., R Generation, Significance, 15 (4), 2018](images/ihaka.png)
+:::
+::::::
+
+## What is R?
+
+* Free, open source software
+
+* User could submit bug reports; frequent reporters were given permission to edit R itself
+  + This became the R Core Team: Gentleman, Ihaka, Mächler, Dalgaard, Hornik, Leisch, Lumley, ...
+
+* The Comprehensive R Archive Network (CRAN) was created to make all essential documentation and files available in one place 
+  + Kurt Hornik and Friedrich Leisch (Vienna University)
+
+* CRAN: allows users to publish custom packages – much of R’s success and functionality derives from this feature
+
+
+## What is R?
+
+* R v1.0.0 released in 2000
+
+* R adopted by data science community, phenomenal success
+
+* New generation of developers more interested in what R can do and less how it does it
+  + E.g. Hadley Wickham of Rstudio
+
+* 19,513 packages on CRAN as of May 2023
+  + Even more on bioconductor and GitHub etc
+
+## What is R?
+
+![https://twitter.com/_R_Foundation/status/1233671896144793600](images/rv1.jpg)
+
+## What is R?
+
+![Thieme, N., R Generation, Significance, 15 (4), 2018](images/wickham.png)
+
+## What is R?
+
+* 2 ways of writing R code:
+  + Classic / base R
+  + RStudio / tidyverse 
+
+$$\,$$
+
+* Syntax can be quite different:
+  + tidyverse relies on a number of linked packages.
+  + tidyverse aims for simplicity: less coding, more thinking.
+  + Whichever is most intuitive to you, will be best for you!
+
+$$\,$$
+
+* Engine the same
+* We will focus primarily on tidyverse in this workshop.
+
+# R and R studio IDE
+
+## Getting started - R and R studio IDE
+
+There are 2 main parts of software that you will need.
+
+* R is an environment for statistical computing. It is a programming language, specifically a scripting / interpreted language that does not require compilation.
+  + ![https://cran.r-project.org/](https://cran.r-project.org/)
+  
+* RStudio is a company who have developed the most used graphical user interface (GUI) / integrated development environment (IDE) for R.
+  + ![https://www.rstudio.com](https://www.rstudio.com)
+
+## Getting started - R and R studio IDE
+
+* R is free and open source. Most latest statistical developments are first implemented in R. Unlike commercial packages (SAS, Stata, …), there is little to no quality control for R packages other than feedback from users. Be aware of this!
+
+$$\,$$
+
+* You will mostly interact with R through RStudio, so familiarise yourself with its interface
+
+## Getting started - R and R studio IDE
+
+![](images/rstudio.png)
+
+## Getting started - R and R studio IDE
+
+**R workspace: saving & recovering**
+
+## Getting started - Workspace
+
+* R workspace =
+  + Working directory
+  + History of commands
+  + All objects in memory
+  
+* By default R will ask you to save this when you terminate a session.
+  + Useful e.g. for models that take a long time to run.
+* Generally better to keep R scripts and re-create your R workspace each time – difficult / impossible to do it the other way around!
+* You can turn saving workspace and restoring it by default off:
+  + Tools $\rightarrow$ Global Options...
+
+## Getting started - Workspace
+
+![](images/workspace.png)
+
+## Getting started - Workspace
+
+* Save all objects in memory:
+`save(list=ls(),file="workspaceSave.RData")`
+
+$$\,$$
+
+* Recover the workspace:
+
+`load(file="workspaceSave.RData")`
+
+$$\,$$
+
+* Save history of all commands commands typed during session:
+
+`savehistory(file="Rcommands.Rhistory")`
+
+## Getting started
+
+**R scripts and editors**
+
+## Getting started - R scripts
+
+* Use the console for experimenting / trying things out / exploring.
+* For your analyses / graphs: write R scripts
+  + These are just text files containing your R code.
+  + You can easily re-run everything → reproducibility.
+  + Save custom R functions to scripts that you can `source()` in other scripts.
+  + Collaborate with others by sharing scripts.
+
+$$\,$$
+
+* If sharing scripts with others: comment your scripts.
+
+```{r}
+# this is a comment explaining what the chunk of code does
+
+```
+
+## Getting started - Editors
+
+* R Studio comes with an editor: upper left panel.
+* Other editors:
+  + Notepad ++
+  + VS Code
+
+* If you have access to UNIX-like terminals:
+  + Emacs
+  + Vim
+  + Nano
+
+## Getting started - version control
+
+* You may change your mind about some code much later after it was written and want to recover a previous version.
+* You have updated a script, but a reviewer forces you to redo something the way you did it at submission. This is important for reproducible science.
+  + Can be catastrophic if you do not have some kind of version control.
+* You can do manual version control by e.g. dating scripts.
+* Better: git & GitHub (www.github.com)
+
+
+# Documentation & tutorials
+
+## Documentation & tutorials
+
+The key to learn R is to know where to get help!
+
+::: notes
+Programming (not just R): have idea, write code, get error, debug.
+:::
+
+$$\,$$
+
+* R help files
+  + Type `?` followed by the name of the command you want to get help on.
+  + Type `help.start()` to open manuals, FAQs and other material.
+
+* CRAN
+  + Tutorials & manuals:[https://cran.r-project.org/manuals.html](https://cran.r-project.org/manuals.html)
+  + Task views: [https://cran.r-project.org/web/views/](https://cran.r-project.org/web/views/)
+
+* Rstudio
+  + Cheatsheets: [https://rstudio.com/resources/cheatsheets/](https://rstudio.com/resources/cheatsheets/)
+
+  
+## Documentation & tutorials
+
+The key to learn R is to know where to get help!
+
+::: notes
+Programming (not just R): have idea, write code, get error, debug.
+:::
+
+$$\,$$
+
+* Why R? webinars [http://whyr.pl/foundation/webinars/](http://whyr.pl/foundation/webinars/)
+
+* R-bloggers [https://www.r-bloggers.com/](https://www.r-bloggers.com/)
+
+* Stack overflow [https://stackoverflow.com/questions/tagged/r](https://stackoverflow.com/questions/tagged/r)
+
+* R Graph Gallery [https://www.r-graph-gallery.com/](https://www.r-graph-gallery.com/)
+
+* Data Camp [https://www.datacamp.com/](https://www.datacamp.com/)
+
+* Text books
+  + Many, but this one is excellent and free [http://r4ds.had.co.nz](http://r4ds.had.co.nz)
+
+## Documentation & tutorials - books
+
+:::::: {.columns}
+::: {.column width="50%"}
+![ ](images/bookDummies.png)
+:::
+
+::: {.column width="50%"}
+![http://r4ds.had.co.nz](images/bookWickhamGrolemund.png)
+:::
+::::::
+
+
+## Getting started
+
+**R packages**
+
+## Getting started - R packages
+
+* R is stand-alone and you can code any functions you need for your analysis.
+* Easier to use R packages: pre-coded sets of R functions and data.
+* In fact, a standard installation of R comes with 15 core and 15 recommended packages:
+  + **Base:** base, compiler, datasets, graphics, grDevices, grid, methods, parallel, splines, stats, stats4, tcltk, tools, translations, utils
+  + **Recommended:** KernSmooth, MASS, Matrix, boot, class, cluster, codetools, foreign, lattice, mgcv, nlme, nnet, rpart, spatial, survival
+
+* Packages are hosted either on the Comprehensive R Archive Network (CRAN, https://cran.r-project.org) or on Bioconductor [https://bioconductor.org](https://bioconductor.org). CRAN is the most commonly used of these with Bioconductor packages mostly targeted at bioinformaticians
+
+## Getting started - R packages
+
+* You install packages from CRAN by using the `install.packages()` function.
+* For example:
+
+```{r}
+#install.packages("tidyverse")
+#install.packages("lubridate")
+
+```
+
+* And you load packages by using the function `library()`, for example
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(lubridate)
+library(gridExtra)
+
+```
+  
+## Getting started - R packages
+
+* Installation details for Bioconductor packages are given on the Bioconductor website for each package.
+
+$$\,$$
+
+(https://bioconductor.org/packages/release/bioc/html/variancePartition.html)
+
+## Getting started 
+
+**Creating a project**
+
+* From the menu, **click create project** icon
+* Select new directory $\rightarrow$ New project
+* Give project name - e.g. Introduction to R
+* Using browse, select the directory you want to save your project
+* Then click create project
+* A new R session will open and will automatically set your project folder as your working directory
+* To be more organised, lets create 3 subdirectories for each of the 3 sessions
+
+```{r}
+dir.create("Module 1", showWarnings = FALSE)
+```
+
+## Getting started - R project
+
+* Inside session 1, we will create 2 subdirectories
+  + Scripts folder to contain our R code
+  + Data folder to hold any data 
+  
+```{r}
+dir.create("Module 1/scripts", showWarnings = FALSE)
+dir.create("Module 1/data", showWarnings = FALSE)
+```
+
+
+# R basics
+
+## R basics - variables
+
+* Variables are containers that hold data
+* Use the assignment operator `<-` or `=` to assign values to a variables
+
+```{r}
+name <- "Jones"
+age <- 12
+```
+
+* To see the value of the variable, simply type the variable name. You can use the `print()` function
+
+```{r}
+name
+
+print(age)
+```
+
+## R basics - data and object types
+
+**Object types**
+
+## R basics - object types
+
+* Vectors
+  + A single number or word is just a vector of length 1.
+  + Use the `c()` function to create vectors
+  
+```{r}
+vec <- c(12,22,11,45,12)
+mw_districts <- c("Blantyre","Neno","Lilongwe","Karonga")
+```
+  
+* You can access individual elements of a vector
+
+```{r}
+vec[1] # first element
+mw_districts[4] # fourth element
+```
+
+## R basics - object types
+
+* Matrices
+  + Matrices hold data tables (rows and columns).
+  + All elements of a matrix need to be of the same type (e.g. all numeric or all character).
+  + You can create matrices with the function `matrix()`.
+  
+```{r}
+mat <- matrix(1:25, nrow = 5, ncol = 5)
+mat
+```
+  
+## R basics - object types
+
+
+* You can access individual elements of a matrix, e.g. 2nd row, 3rd column `mat[2,3]`
+
+```{r}
+mat[2,3]
+```
+
+* Arrays
+  + Generalise matrices to have any number of dimensions (i.e. more than just 2, e.g.3x3x2).
+  + Not commonly used
+  
+```{r}
+a1 <- table(mtcars$cyl,mtcars$gear,mtcars$am)
+```
+  
+  + You can access individual elements of an array, e.g. `a1[3,1,2]`
+
+## Lists
+
+* Lists are very flexible objects that can hold several elements.
+* Each element can be of a different type.
+* Elements can (but don’t need to) be named
+
+```{r}
+my_list <- list(weight = c(34,38,42), name = "Mayeso", is_student = TRUE)
+```
+
+* You can access elements of a list 
+
+```{r}
+my_list[[1]] # first element
+my_list$is_student # extract by name
+
+```
+
+## Data frames
+
+* This is the most common object you will use to work with data, e.g. `read.table()` returns a data frame
+* Data frames are like matrices in that they provide a data table (rows and columns) but unlike matrices allow different data types for different columns.
+* Technically data frames are special types of lists. This means that you can access individual columns / variables by using the `$` notation.
+
+```{r}
+df <- data.frame(pid = 1:5, name = c("Mary","Harold","James","Ann","Malik"), score = c(67,62,60,71,73))
+df
+```
+
+## Data frames
+
+* You can access individual variables, e.g. `df$name `or `df[,"name"]` or `df[,2]`
+* You can access individual rows, e.g. `df[1,]`.
+* You can access individual elements, e.g. `df[3,2]` or `df$name[3]`
+
+## Tibbles
+
+* Tibbles are data frames, but have special methods for printing, accessing and working with them.
+* Tibbles are used by the tidyverse packages.
+* Use tibbles just like data frames
+
+$$\,$$
+The rules of tidy data:
+
+* 1 row = 1 observation
+* 1 column = 1 variable
+* 1 cell = 1 value.
+
+## R basics - data and object types
+
+A variable has one of 4 levels of measurement:
+
+* **nominal** - classifies observations into different categories
+  + alive / dead
+  + human, fish, goat, bird
+
+* **ordinal** - different categories, but categories are ordered
+  + low, medium, high
+
+* **interval** - ordered data with degree of difference; ratios not meaningful
+  + temperature in centigrade: difference betwen 10^o^ and 20^o^ same as between 50^o^ and 60^o^ but 20^o^ not twice as hot as 10^o^
+
+* **ratio** - interval data with a unique, non arbitrary zero value; ratios meaningful
+  + temperature in Kelvin
+  + length
+  
+
+## R basics - data and object types
+
+
+R supports the following data types:
+
+* **Character**
+
+```{r}
+a <- c("Male","Female")
+```
+
+* Integer
+
+```{r}
+weight <- c(23,34,12,45,59)
+num <- seq(0,12)
+```
+
+* Numeric/double
+
+```{r}
+m <- pi
+W <- 45/234
+```
+
+## R basics - data and object types
+
+* Logical/Boolean
+
+```{r}
+is_tuesday <- TRUE
+h <- 21 > 34
+```
+
+* Factor/Nominal
+
+```{r}
+club <- factor(c("Bullets","Wanderers","CIVO","MAFCO"))
+
+```
+
+## R basics - data and object types
+
+* Date & date-times
+
+  + Dates are a special type of data and require special functions to work with.
+  + By far the most helpful package is `lubridate`. It allows you to easily parse date format, using functions like `ymd()`, `ymd_hms()`, `ym()`...
+  + See the [lubridate cheatsheet](https://github.com/rstudio/cheatsheets/raw/master/lubridate.pdf) for more details
+
+```{r}
+ymd("2022-06-04")
+ymd("2022 June 4")
+```
+
+## R basics - data and object types
+
+Dates & date-times
+
+```{r}
+ymd_hms("2022-06-04 10:00:00")
+
+ym("2022-06")
+
+ymd("2022-06-04") - ymd("2021-03-02")
+```
+
+## R basics - data and object types
+
+**Naming variables**
+
+* They are good practices to follow when naming variables
+* Variable names can contain letters, numbers, underscores or a period
+* Must begin with a letter
+* Names should be descriptive
+
+```{r}
+# camelCase
+nameStudents <- c("Mike","Joe")
+
+# PascalCase 
+NameStudents <- c("Mike","Joe")
+
+# snake_case 
+name_students <- c("Mike","Joe")
+```
+
+
+# Reading and writing data
+
+## Reading and writing data
+
+* As the most basic task for any analysis in R, you need to be able to read your data into R and, at the end, write the results to a file on your har drive.
+* Let’s start by using some data that R comes with, write it out to the disk, then read it back in.
+* The dataset iris is a famous dataset recording 150 observations of 3 species of flowers. It was extensively used by Ronald Fisher as he developed his statistical theory. Find out more about the data by typing ?iris at the R console.
+
+## Reading and writing data
+
+$$\,$$
+
+**Writing data to disk**
+
+## Reading and writing data - Writing data
+
+```{r}
+head(iris) # explore the first 6 rows
+```
+
+## Reading and writing data - Writing data
+
+```{r}
+dim(iris)
+table(iris$Species)
+```
+
+## Reading and writing data - Writing data
+
+* Let's create a coma separated file
+
+```{r}
+write.csv(iris,file = "Module 1/iris.csv", row.names = FALSE)
+```
+
+* Check if successfully saved
+
+## Reading and writing data - Reading data
+
+* Let’s suppose now that this file is our dataset and we want to load it into R so that we can work with it.
+* We need to read the content into memory (RAM) and assign it to an object in R that we can then manipulate or feed into different functions for analysis or visualisation.
+* For this we use the function `read.csv()` and the assignment operator `<-`.
+
+```{r}
+iris_data <- read.csv("Module 1/data/iris.csv")
+head(iris_data)
+```
+
+## Reading and writing data - Reading data
+
+```{r}
+dim(iris_data)
+table(iris_data$Species)
+```
+
+
+## Reading and writing data - Reading data
+
+There are alternatives: the more general function `read.table()` or the function `read_csv()` from the R package `readr` which is one package contained in a set known as the tidyverse.
+
+```{r}
+iris_data2 <- read.table("Module 1/data/iris.csv", sep = ",", header = TRUE)
+dim(iris_data2)
+table(iris_data2$Species)
+```
+
+## Reading and writing data - Reading data
+
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)
+iris_data3 <- read_csv("Module 1/data/iris.csv")
+iris_data3
+```
+
+## Reading and writing data - Reading data
+
+```{r}
+dim(iris_data3)
+table(iris_data3$Species)
+```
+
+## Reading and writing data - binary files
+
+You can also save to a binary, R format file.
+
+This takes up less space on the hard drive and loads faster.
+
+$$\,$$
+
+```{r}
+save(iris, file = "Module 1/iris.RData") # preserves variable name
+saveRDS(iris, file = "Module 1/iris.rds") # does not preserve variable name
+```
+
+## Reading and writing data - binary files
+
+`load()` for saved workspaces and objects saved using `save()`. Object names in R will be the same as when they were saved, no object assignment:
+
+`load("dataAndSupportDocs/iris.RData")`
+
+* `readRDS()` for objects saved using `saveRDS()`. Need to assign to an object:
+
+```{r}
+dt <- readRDS("Module 1/data/iris.rds")
+```
+
+## Reading and writing data - other formats
+
+**Other formats**
+
+## Reading and writing data - other formats
+
+```{r, message=F, warning=F}
+library(foreign)
+```
+
+$$\,$$
+
+  + Stata (up to Stata 12 dta format)
+  + SPSS
+  + Epi Info
+  + Minitab
+  + Octave / Matlab
+  + ...
+
+
+## ## Reading and writing data - other formats
+
+**Stata** dta format versions can be painful
+
+```{r, message=F, warning=F} 
+library(readstata13) # all Stata versions
+```
+
+$$\,$$
+
+```{r, message=FALSE, warning=FALSE}
+library(haven) # up to Stata 17
+```
+
+* Write to/read from different formats
+* For example, `read_dta()` to read from Stata
+* `write_dta()` to write to excel format
+
+## Working with data
+
+$$\,$$
+
+**Handling data**
+
+## Working with data - handling data
+
+Often you only want to work with a subset of your data. This may be that you are interested only in one group of observations or that you may want to get rid of irrelevant variables. The `dplyr` package provides 2 easy to use function for this: `filter()` and `select()`.
+
+* `filter()` allows filtering out only certain observations
+* `select()` allows selecting specific variables
+
+```{r}
+setosa <- filter(.data = iris, Species == "setosa") # only 'setosa' observations
+iris_sub <- select(.data = iris, Petal.Width, Petal.Length) # only the Petal.Width and Petal.Length variables
+```
+
+## Working with data - handling data
+
+Often you want to combine these operations. For this, pipes are useful.
+The tidyverse package `magrittr` introduced a pipe operator, `%>%`, to R. You may be familiar with pipes if you have done any shell scripting before (e.g.bash or zsh where the pipe operator is `|`). Pipes allow to transfer the output of one function as input to another function. This allows for more concise code.
+
+$$\,$$
+
+Since R v4.1.0 there is also a native pipe symbol in R: `|>`.
+
+## Working with data - handling data
+
+```{r}
+iris |>
+filter(Species == "setosa") |> 
+select(Petal.Width, Petal.Length) |>
+head(n = 5)
+```
+
+## Working with data - handling data
+
+To create new variables from existing ones, you can use the function `mutate() `(add new variables and preserve existing ones) and `transmute()` (add new variables but drop existing ones) from the `dplyr` package (part of the `tidyverse`).
+
+```{r}
+irisNew <- iris |> 
+  mutate(LRatio = Sepal.Length/Petal.Length,
+         WRatio = Sepal.Width/Petal.Width)
+
+```
+
+## Working with data - handling data
+
+```{r}
+head(irisNew)
+```
+
+## Working with data - handling data
+
+```{r}
+irisNew2 <- iris |> 
+  transmute(LRatio = Sepal.Length/Petal.Length,
+         WRatio = Sepal.Width/Petal.Width)
+```
+
+## Working with data - handling data
+
+```{r}
+head(irisNew2)
+```
+
+## Working with data - handling data
+
+This can also be useful to recode categorical variables; e.g.suppose we wish to change the Species variable in the iris dataset so that **virginica** and **versicolor** are combined into a single value.
+
+```{r}
+irisNew3 <- iris |>
+ mutate(Species=fct_recode(Species,setosa="setosa",virginica_versicolor="virginica",virginica_versicolor="versicolor"))
+
+```
+
+## Working with data - handling data
+
+```{r}
+table(iris$Species)
+table(irisNew3$Species)
+```
+
+## Working with data - handling data
+
+Another useful situation may be when a binary or dichotomous variable is coded as 1/2 (here we assume 1=success and 2=failure) but you want it coded 0/1 (0=failure, 1=success).
+
+```{r}
+df <- data.frame(ID=1:10, binVar=sample(1:2,replace=T,size=10,prob=c(0.2,0.8))) |>
+  mutate(binVar01=case_when(binVar==2~0, 
+                            binVar==1~1))
+```
+
+## Working with data - handling data
+
+```{r}
+table(df$binVar)
+table(df$binVar01)
+```
+
+## Working with data - handling data
+
+**Join / merge data tables**
+
+At a very basic level you can use the commands `rbind()` and `cbind()` to join vectors / matrices / data frames by rows `(rbind)` or columns `(cbind)`. This requires the objects getting combined to have either the same number and same order of columns (when `rbind()` is used) or rows (for `cbind()`).
+
+```{r}
+newMatrix <- rbind(1:3,4:6)
+head(newMatrix)
+```
+
+## Working with data - handling data
+
+```{r}
+irisRatios <- data.frame(LRatio=iris$Sepal.Length/iris$Petal.Length, 
+                         WRatio=iris$Sepal.Width/iris$Petal.Width
+                         )  
+
+irisNew3 <- cbind(iris,irisRatios)
+head(irisNew3)
+```
+
+
+## Working with data - handling data
+
+However, in many situations we want to join tables of different dimensions and we want to extract some information from one data frame and add it to another.
+$$\,s$$
+For example you may have a first data frame consisting of individual-level data on patients and which drug they were given and a second data frame consisting of data on drugs - what is the active ingredient for example. You may want to add the drug data to the individual level data based on which drug each patient received.
+
+## Working with data - handling data
+
+For such operations, joins are important operations. There are many ways you can join 2 data frame, depending on how you want to add information. The graphic on the next slide summarises different joins: left joins (almost always what you want to do), right joins, full joins and inner joins.
+
+You can use the dplyr package functions `left_join()`, `right_join()`, `full_join()` and `inner_join()` to do such join operations.
+
+## Working with data - handling data
+
+![Wickham, H. & Grolemund G., R for Data Science, O’Reilly, 2016](images/joins.png)
+
+## Working with data - handling data
+
+![Wickham, H. & Grolemund G., R for Data Science, O’Reilly, 2016](images/joinsVenn.png)
+
+## Working with data - handling data
+
+```{r}
+# Patient-level data 
+pDat <- data.frame(name = c("Marc","Ulemu","Clemens","Brigitte"), 
+                   age = c(37,48,46,38), 
+                   drug = c("Lariam","Lariam","Malarone","none")
+                   )
+
+```
+
+```{r}
+head(pDat)
+```
+
+## Working with data - handling data
+
+```{r}
+# Drug-level data
+dDat<-data.frame(commonName=c("Acticlate","Aralen","Jasoprim","Lariam","Malarone","Malirid","Monodox"), ingredient=c("Doxycycline","Chloroquine","Primaquine","Mefloquine","Atavaquone/Proguanil","Primaquine","Doxycyline"))
+
+```
+
+## Working with data - handling data
+
+```{r}
+head(dDat)
+```
+
+## Working with data - handling data
+
+```{r}
+# Left join
+pDatWithDrug <- left_join(pDat,dDat,by = c("drug" = "commonName"))
+
+```
+
+## Working with data - handling data
+
+```{r}
+head(pDatWithDrug)
+```
+
+## Working with data - handling data
+
+**Pivoting data **(wide → long and long → wide)
+
+When data are collected with repeated measurements on the same unit over time or across different conditions (e.g. longitudinal patient data, or before / after data on the same patients), the data can be either in a **wide** format or a **long** format.
+
+Depending on what analysis is going to be done, the data may need to be in either of these 2 formats. It is important to be able to switch between both formats when needed.
+
+The package `tidyr` provides 2 useful functions for this: `pivot_longer()` and `pivot_wider()`.
+Their use is best illustrated with an example
+
+## Working with data - handling data
+
+```{r}
+
+datWide <- read.table(header=TRUE, text='
+                      subject sex control cond1 cond2
+                      1       M       7.9  12.3  10.7
+                      2       F       6.3  10.6  11.1
+                      3       F       9.5  13.1  13.8
+                      4       M      11.5  13.4  12.9
+                      ')
+datWide$subject <- factor(datWide$subject)
+
+```
+
+## Working with data - handling data
+
+```{r}
+print(datWide)
+```
+
+## Working with data - handling data
+
+This is the *wide* format: 1 individual per row, multiple observations of the same variable under different conditions or fixed timepoints.
+
+**Wide to long:** `pivot_longer()` 
+
+```{r}
+datLong <- 
+  pivot_longer(datWide,cols=c(control,cond1,cond2),names_to="condition",values_to="measurement")
+```
+
+## Working with data - handling data
+
+```{r}
+print(datLong)
+```
+
+## Working with data - handling data
+
+**Long to wide:** `pivot_wider()` 
+
+```{r}
+pivot_wider(data=datLong,names_from=condition,values_from=measurement)
+
+```
+
+## Working with data - handling data
+
+**Note:** if you have longitudinal data with variable time points, you can only use the long format.
+
+## Working with data - handling data
+
+Sometimes packages compete which other.
+
+For example, a `filter()` function can be found in at least these 3 packages:
+
+  + dplyr, mice, stats
+
+Likewise, a `select()` function can be found in at least these 2 packages:
+
+  + MASS
+  + dplyr
+
+To avoid confusion and mistakes, it is often better to clarify which package you refer to. You do this by pre-pending the package name in front of the function name:
+
+  + `dplyr::filter()`
+  + `dplyr::select()`
+  + `mice::filter()`
+
+
+# Programming/coding
+
+## Coding
+
+$$\,$$
+
+**Coding**
+
+## Coding - R functions
+
+When you need to do a given set of commands over and over again, it may be more efficient to group them in an R function - it avoids you to write repetitive code.
+
+A function is a block of code that performs a particular task.
+
+It consists of optional input parameters.
+
+A series of statements make up the body of the function.
+
+When called, a function will execute the statements within its body
+
+## Coding - R function 
+
+To define a function you need to use the R function `function()`. Inside the brackets you then specify the input arguments to the function you define. The body of code for the function follows in curly brackets after the call to `function`.
+
+On the next slide is an example where we define a new function, `summaryFunction()`, that will compute the mean and standard deviation of a specific variable in a data frame and returns this as a list of length 2.
+
+
+## Coding - R function 
+
+```{r}
+summaryFunction <- function(dat, var){  
+  # dat = a data frame  
+  # var = a character string indicating the name of the variable in the dat data frame that is to be summarised 
+  m <- mean(dat[,var]) 
+  s <- sd(dat[,var])
+  return(list(mean = m, sd = s))
+}
+
+```
+
+
+## Coding - R function 
+
+```{r}
+summaryFunction(dat = iris, var = "Sepal.Width")
+```
+
+
+## Coding - for loops, if statements
+
+A key concept in most programming languages are mechanisms to iterate a set of instructions and to control the execution of parts of the code. There are many of these in R, but we will focus on 2 key concepts here:
+
+* for loops - to iterate a section of code over a vector, data frame or list
+* if statements - to write sections of code that are only run conditional on certain condition(s) to be met
+
+```{r}
+# create an empty vector of the desired size
+flowerSize <- rep(NA,nrow(iris))
+# iterate over all rows of the iris data frame
+for(i in 1:nrow(iris)){  
+  flowerSize[i] <- 
+    iris$Petal.Length[i]+iris$Petal.Width[i]+iris$Sepal.Length[i]+iris$Sepal.Width[i]
+}
+irisNew4 <- cbind(iris,flowerSize)
+```
+
+## Coding - for loops, if statements
+
+```{r}
+head(irisNew4)
+```
+
+## Coding - for loops, if statements
+
+for loops are slow in R. Whenever possible, attempt to vectorise your operations.
+
+```{r}
+# what we've just done
+forLoop<-function(){
+  flowerSize<-rep(NA,nrow(iris))
+  for(i in 1:nrow(iris)){
+    flowerSize[i]<-iris$Petal.Length[i]+iris$Petal.Width[i]+iris$Sepal.Length[i]+iris$Sepal.Width[i]
+  }
+}
+
+```
+
+## Coding - for loops, if statements
+
+```{r}
+# same operation but vectorised
+vectorOperation<-function(){
+  flowerSize<-iris$Petal.Length+iris$Petal.Width+iris$Sepal.Length+iris$Sepal.Width
+  }
+
+```
+
+## Coding - for loops, if statements
+
+```{r}
+system.time(forLoop())
+system.time(vectorOperation())
+```
+
+
+# Parameter estimation / summary statistics (primer)
+
+## Parameter estimation / summary statistics
+
+$$\,$$
+
+**Proportions**
+
+## Parameter estimation/summary statistics
+
+The function `binom.test()` allows you to easily compute proportion estimates and exact binomial 95% confidence intervals:
+
+```{r}
+dat <- iris
+
+propEst <-
+  binom.test(x=sum(dat$Species=="setosa"),n=nrow(dat))
+propEst$estimate
+propEst$conf.int
+```
+
+## Parameter estimation/summary statistics
+
+Formatting this nicely and expressing it as percentages:
+
+```{r}
+propNice<-paste(sep="",
+format(nsmall=1,round(digits=1,100*propEst$estimate)),
+                "% (",               
+format(nsmall=1,round(digits=1,100*propEst$conf.int[1])),
+                "%, ",                
+format(nsmall=1,round(digits=1,100*propEst$conf.int[2])),
+                "%)")
+cat(propNice,file="")
+```
+
+## Parameter estimation/summary statistics
+
+$$\,$$
+
+**Means, standard deviations**
+
+## Parameter estimation/summary statistics
+
+To compute an arithmetic mean, the R function `mean()` can be used and for standard deviations the function `sd()` is used.
+
+```{r}
+mu <- mean(dat$Petal.Length,na.rm = TRUE)
+sigma <- sd(dat$Petal.Length,na.rm = TRUE)
+sigma2 <- sigma^2 # same as sigma2<-var(dat$Petal.Length,na.rm=TRUE)
+n <- sum(!is.na(dat$Petal.Length))
+ci <- c(mu - qnorm(0.975)*sigma/sqrt(n), 
+      mu + qnorm(0.975)*sigma/sqrt(n)
+)
+```
+
+## Parameter estimation/summary statistics
+
+```{r}
+print(mu)
+print(sigma)
+print(sigma^2)
+print(ci)
+```
+
+## Parameter estimation/summary statistics
+
+To compute a median, the function `median()` is used and for IQRs, use `quantile()`. You can also use the function `iqr()` for the latter but this returns the width of the IQR.
+
+```{r}
+me <- median(dat$Petal.Length,na.rm = TRUE)
+iqr <-
+quantile(dat$Petal.Length,probs=c(0.25,0.75),na.rm=TRUE)
+
+```
+
+
+## Parameter estimation/summary statistics
+
+```{r}
+print(me)
+print(iqr)
+```
+
+## Parameter estimation/summary statistics
+
+$$\,$$
+
+**Grouping and summarising**
+
+
+## Parameter estimation/summary statistics
+
+Often it is easiest to summarise a dataset, when you group observations. The R functions `group_by()` and `summarise()` are useful here.
+
+```{r}
+dat %>%
+  group_by(Species) %>%
+  summarise(mean = mean(Petal.Length),
+            median = median(Petal.Length),
+            sd = sd(Petal.Length),
+            q25 = quantile(Petal.Length, probs = 0.25),
+            q75 = quantile(Petal.Length, probs = 0.75)
+            ,.groups = "drop")
+```
+
+##
+
+$$\,$$
+
+**End of Module 1**
+
